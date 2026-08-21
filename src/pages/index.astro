@@ -1,0 +1,108 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const latest = posts.slice(0, 5);
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="hero">
+				<h1>솔루션이 아니라 문제에서 시작합니다</h1>
+				<p>
+					PM과 프로덕트 메이커를 위한 디자인 씽킹 연재입니다. 좋은 아이디어를 내는 법이 아니라,
+					풀어야 할 문제를 제대로 고르고 정의하는 법을 다룹니다. 하나의 사례를 처음부터 끝까지
+					관통시키며, 고객 정의부터 문제 정의, 솔루션 만들기까지 순서대로 씁니다.
+				</p>
+				<p><a class="cta" href="/blog">연재 전체 보기</a></p>
+			</section>
+
+			<section class="latest">
+				<h2>최근 글</h2>
+				{
+					latest.length === 0 ? (
+						<p>첫 글을 준비하고 있습니다.</p>
+					) : (
+						<ul>
+							{latest.map((post) => (
+								<li>
+									<a href={`/blog/${post.id}/`}>
+										<span class="title">{post.data.title}</span>
+										<FormattedDate date={post.data.pubDate} />
+									</a>
+								</li>
+							))}
+						</ul>
+					)
+				}
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.hero {
+		padding: 1rem 0 2rem;
+	}
+	.hero h1 {
+		margin: 0 0 0.5rem;
+		font-size: 2.2rem;
+		line-height: 1.2;
+	}
+	.hero p {
+		color: rgb(var(--gray-dark));
+	}
+	.cta {
+		display: inline-block;
+		margin-top: 0.5rem;
+		padding: 0.6em 1.2em;
+		background: rgb(var(--black));
+		color: white;
+		border-radius: 8px;
+		text-decoration: none;
+	}
+	.latest {
+		border-top: 1px solid rgb(var(--gray-light));
+		padding-top: 1.5rem;
+	}
+	.latest ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	.latest li {
+		padding: 0.6rem 0;
+		border-bottom: 1px solid rgb(var(--gray-light));
+	}
+	.latest li a {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 1rem;
+		text-decoration: none;
+		color: rgb(var(--black));
+	}
+	.latest .title {
+		font-weight: 600;
+	}
+	@media (max-width: 720px) {
+		.latest li a {
+			flex-direction: column;
+			gap: 0.2rem;
+		}
+	}
+</style>
