@@ -110,9 +110,22 @@ p {
 }
 ul,
 ol {
-	padding-left: 1.3em;
+	list-style: none;
+	padding: 0;
+	margin: 0;
 }
-li {
+/* Restore list styling only inside article prose */
+.prose ul {
+	list-style: disc;
+	padding-left: 1.5em;
+	margin: 0 0 1.1em;
+}
+.prose ol {
+	list-style: decimal;
+	padding-left: 1.5em;
+	margin: 0 0 1.1em;
+}
+.prose li {
 	margin-bottom: 0.4em;
 }
 textarea,

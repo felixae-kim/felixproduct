@@ -19,14 +19,15 @@ const posts = (await getCollection('blog')).sort(
 	<body>
 		<Header />
 		<main>
-			<p class="comment">// design thinking, a series for product people</p>
+			<p class="comment">// 디자인 씽킹, 제품 만드는 사람을 위한 연재</p>
 			<h1>Writing</h1>
-			<ul class="list">
+			<ol class="series">
 				{
 					posts.map((post) => (
 						<li>
 							<a href={`/blog/${post.id}/`}>
-								<span class="title">{post.data.title}</span>
+								<span class="no">[{post.id.slice(0, 2)}]</span>
+								<span class="t">{post.data.title}</span>
 								<span class="date">
 									<FormattedDate date={post.data.pubDate} />
 								</span>
@@ -34,7 +35,7 @@ const posts = (await getCollection('blog')).sort(
 						</li>
 					))
 				}
-			</ul>
+			</ol>
 		</main>
 		<Footer />
 	</body>
@@ -50,44 +51,62 @@ const posts = (await getCollection('blog')).sort(
 	h1 {
 		margin-bottom: 1.6rem;
 	}
-	.list {
+	.series {
 		list-style: none;
 		padding: 0;
 		margin: 0;
+		font-family: var(--font-mono);
 		border-top: 1px solid var(--border);
 	}
-	.list li {
+	.series li {
 		margin: 0;
 		border-bottom: 1px solid var(--border);
 	}
-	.list a {
+	.series a {
 		display: flex;
-		justify-content: space-between;
 		align-items: baseline;
-		gap: 1rem;
-		padding: 0.9rem 0.2rem;
+		gap: 0.9rem;
+		padding: 0.8rem 0.2rem;
 		text-decoration: none;
 	}
-	.list a:hover {
+	.series a:hover {
 		text-decoration: none;
 	}
-	.list .title {
+	.series .no {
+		flex: 0 0 auto;
+		color: var(--green);
+		font-size: 0.9rem;
+	}
+	.series .t {
+		flex: 1 1 auto;
 		color: var(--fg-strong);
-		font-weight: 500;
+		font-size: 0.95rem;
 	}
-	.list a:hover .title {
+	.series a:hover .t {
 		color: var(--accent);
 	}
-	.list .date {
+	.series .date {
 		flex: 0 0 auto;
-		font-family: var(--font-mono);
-		font-size: 0.8rem;
+		font-size: 0.78rem;
 		color: var(--muted);
+		white-space: nowrap;
 	}
-	@media (max-width: 560px) {
-		.list a {
-			flex-direction: column;
-			gap: 0.2rem;
+	@media (max-width: 640px) {
+		.series a {
+			flex-wrap: wrap;
+			gap: 0.3rem 0.6rem;
+		}
+		.series .t {
+			flex: 1 1 100%;
+			order: 3;
+			padding-left: 2.1rem;
+		}
+		.series .no {
+			order: 1;
+		}
+		.series .date {
+			order: 2;
+			margin-left: auto;
 		}
 	}
 </style>
