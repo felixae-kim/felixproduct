@@ -10,10 +10,25 @@ const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 const latest = posts.slice(0, 5);
+
+// Series curriculum. Items with a slug render as links; others show as "soon".
+const series = [
+	{ no: 0, title: 'Start from the problem, not the solution', desc: 'Orientation: what this series covers and in what order.', slug: '00-start-from-problem' },
+	{ no: 1, title: 'Why design thinking, now', desc: 'The era of sharp products over new ones.', slug: '01-why-design-thinking' },
+	{ no: 2, title: 'Defining who your customer is', desc: 'Not every user, but the one who drives the business.', slug: '02-defining-the-customer' },
+	{ no: 3, title: 'Seeing the problem through data', desc: 'Turning "it feels clunky" into "the drop-off is high."', slug: '03-problem-through-data' },
+	{ no: 4, title: 'Customers lie: surveys, interviews, observation', desc: 'Three angles aimed at the same truth.', slug: '04-customers-lie' },
+	{ no: 5, title: 'Symptoms vs root cause', desc: 'Treat the liver, not the yellow face.', slug: '05-root-cause' },
+	{ no: 6, title: "Don't build everything: two axes for picking problems", desc: 'Impact and solvability, plotted on a grid.', slug: '06-pick-problems' },
+	{ no: 7, title: 'Good solutions come from analysis', desc: 'Not imagination, but cause and effect.', slug: '07-solutions-from-analysis' },
+	{ no: 8, title: 'Winning like a casino: hypotheses and metrics', desc: 'Stack small edges into repeated wins.', slug: '08-hypotheses-and-metrics' },
+	{ no: 9, title: 'Start from the job your product is hired for', desc: 'Defining the solution with jobs to be done.', slug: '09-jobs-to-be-done' },
+];
+const startSlug = '00-start-from-problem';
 ---
 
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
@@ -21,21 +36,57 @@ const latest = posts.slice(0, 5);
 		<Header />
 		<main>
 			<section class="hero">
-				<h1>솔루션이 아니라 문제에서 시작합니다</h1>
-				<p>
-					PM과 프로덕트 메이커를 위한 디자인 씽킹 연재입니다. 좋은 아이디어를 내는 법이 아니라,
-					풀어야 할 문제를 제대로 고르고 정의하는 법을 다룹니다. 하나의 사례를 처음부터 끝까지
-					관통시키며, 고객 정의부터 문제 정의, 솔루션 만들기까지 순서대로 씁니다.
+				<p class="eyebrow">Product · Design Thinking</p>
+				<h1>Start from the problem,<br />not the solution.</h1>
+				<p class="lead">
+					A writing series for product people. Not about having good ideas, but about picking
+					and defining the right problem to solve. One case runs through the whole series, from
+					defining the customer to shaping the solution.
 				</p>
-				<p><a class="cta" href="/blog">연재 전체 보기</a></p>
+				<div class="cta-row">
+					<a class="cta primary" href={`/blog/${startSlug}/`}>Start reading</a>
+					<a class="cta ghost" href="/blog">All writing</a>
+				</div>
 			</section>
 
-			<section class="latest">
-				<h2>최근 글</h2>
-				{
-					latest.length === 0 ? (
-						<p>첫 글을 준비하고 있습니다.</p>
-					) : (
+			<section class="value">
+				<h2>What you'll take away</h2>
+				<ul>
+					<li>Define problems <strong>with data</strong> so the whole team aligns.</li>
+					<li>Dig to the <strong>root cause</strong> instead of the symptom.</li>
+					<li>Learn to <strong>choose what not to build</strong>.</li>
+					<li>Build hypotheses and metrics on <strong>cause and effect</strong>.</li>
+				</ul>
+			</section>
+
+			<section class="curriculum">
+				<h2>The series</h2>
+				<ol class="series">
+					{
+						series.map((ep) => (
+							<li class={ep.slug ? 'published' : 'upcoming'}>
+								<span class="ep">{String(ep.no).padStart(2, '0')}</span>
+								<span class="body">
+									{ep.slug ? (
+										<a href={`/blog/${ep.slug}/`} class="ep-title">
+											{ep.title}
+										</a>
+									) : (
+										<span class="ep-title">{ep.title}</span>
+									)}
+									<span class="ep-desc">{ep.desc}</span>
+								</span>
+								<span class="status">{ep.slug ? 'Live' : 'Soon'}</span>
+							</li>
+						))
+					}
+				</ol>
+			</section>
+
+			{
+				latest.length > 0 && (
+					<section class="latest">
+						<h2>Latest</h2>
 						<ul>
 							{latest.map((post) => (
 								<li>
@@ -46,46 +97,172 @@ const latest = posts.slice(0, 5);
 								</li>
 							))}
 						</ul>
-					)
-				}
-			</section>
+					</section>
+				)
+			}
 		</main>
 		<Footer />
 	</body>
 </html>
 
 <style>
+	main {
+		width: 760px;
+		max-width: calc(100% - 2em);
+	}
+	section {
+		margin-bottom: 3.5rem;
+	}
+	h2 {
+		font-size: 1.35rem;
+		margin: 0 0 1.1rem;
+	}
+
+	/* Hero */
 	.hero {
-		padding: 1rem 0 2rem;
+		padding: 1.5rem 0 2.5rem;
+	}
+	.eyebrow {
+		margin: 0 0 0.8rem;
+		font-size: 0.82rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--accent);
 	}
 	.hero h1 {
-		margin: 0 0 0.5rem;
-		font-size: 2.2rem;
-		line-height: 1.2;
+		margin: 0 0 1.1rem;
+		font-size: 2.9rem;
+		line-height: 1.1;
 	}
-	.hero p {
+	.lead {
+		margin: 0 0 1.6rem;
+		font-size: 1.12rem;
 		color: rgb(var(--gray-dark));
+		max-width: 34em;
+	}
+	.cta-row {
+		display: flex;
+		gap: 0.6rem;
+		flex-wrap: wrap;
 	}
 	.cta {
 		display: inline-block;
-		margin-top: 0.5rem;
-		padding: 0.6em 1.2em;
+		padding: 0.7em 1.3em;
+		border-radius: 10px;
+		text-decoration: none;
+		font-weight: 600;
+		font-size: 0.98rem;
+	}
+	.cta.primary {
 		background: rgb(var(--black));
-		color: white;
-		border-radius: 8px;
+		color: rgb(var(--bg));
+	}
+	.cta.primary:hover {
+		opacity: 0.9;
+	}
+	.cta.ghost {
+		border: 1px solid rgb(var(--gray-light));
+		color: rgb(var(--black));
+	}
+	.cta.ghost:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+
+	/* Value */
+	.value ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.7rem 1.6rem;
+	}
+	.value li {
+		padding-left: 1.3rem;
+		position: relative;
+		color: rgb(var(--gray-dark));
+		font-size: 0.98rem;
+	}
+	.value li::before {
+		content: '→';
+		position: absolute;
+		left: 0;
+		color: var(--accent);
+	}
+
+	/* Curriculum */
+	.series {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		border-top: 1px solid rgb(var(--gray-light));
+	}
+	.series li {
+		display: flex;
+		align-items: flex-start;
+		gap: 1rem;
+		padding: 1rem 0;
+		border-bottom: 1px solid rgb(var(--gray-light));
+	}
+	.series .ep {
+		flex: 0 0 auto;
+		min-width: 1.8rem;
+		font-variant-numeric: tabular-nums;
+		font-weight: 700;
+		color: rgb(var(--gray));
+		font-size: 0.95rem;
+		padding-top: 0.1rem;
+	}
+	.series .body {
+		flex: 1 1 auto;
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+	}
+	.series .ep-title {
+		font-weight: 600;
+		color: rgb(var(--black));
 		text-decoration: none;
 	}
-	.latest {
-		border-top: 1px solid rgb(var(--gray-light));
-		padding-top: 1.5rem;
+	a.ep-title:hover {
+		color: var(--accent);
 	}
+	.series .ep-desc {
+		font-size: 0.9rem;
+		color: rgb(var(--gray));
+	}
+	.series .status {
+		flex: 0 0 auto;
+		font-size: 0.7rem;
+		font-weight: 600;
+		letter-spacing: 0.03em;
+		text-transform: uppercase;
+		padding: 0.2em 0.6em;
+		border-radius: 999px;
+		align-self: center;
+	}
+	.series li.published .status {
+		background: var(--accent);
+		color: rgb(var(--bg));
+	}
+	.series li.upcoming {
+		opacity: 0.65;
+	}
+	.series li.upcoming .status {
+		background: rgb(var(--gray-light));
+		color: rgb(var(--gray-dark));
+	}
+
+	/* Latest */
 	.latest ul {
 		list-style: none;
 		padding: 0;
 		margin: 0;
 	}
 	.latest li {
-		padding: 0.6rem 0;
+		padding: 0.7rem 0;
 		border-bottom: 1px solid rgb(var(--gray-light));
 	}
 	.latest li a {
@@ -96,10 +273,33 @@ const latest = posts.slice(0, 5);
 		text-decoration: none;
 		color: rgb(var(--black));
 	}
+	.latest li a:hover .title {
+		color: var(--accent);
+	}
 	.latest .title {
 		font-weight: 600;
 	}
+
 	@media (max-width: 720px) {
+		.hero {
+			padding: 1rem 0 2rem;
+		}
+		.hero h1 {
+			font-size: 2.2rem;
+		}
+		.hero h1 br {
+			display: none;
+		}
+		.lead {
+			font-size: 1.05rem;
+		}
+		.value ul {
+			grid-template-columns: 1fr;
+		}
+		.cta {
+			flex: 1 1 auto;
+			text-align: center;
+		}
 		.latest li a {
 			flex-direction: column;
 			gap: 0.2rem;
