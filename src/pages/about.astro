@@ -1,43 +1,265 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+const experience = [
+	{ org: '레브잇 (Alwayz)', role: 'Commerce Product Lead', period: '2026.03 – 현재' },
+	{ org: '부산 핀테크 허브', role: 'Lecturer', period: '2025.11 – 2026.02' },
+	{ org: '무신사 (29CM)', role: 'Sr. Product Manager', period: '2025.07 – 2025.10' },
+	{ org: '라인파이낸셜 (LINE BK)', role: 'Product Owner', period: '2024.11 – 2025.07' },
+	{ org: '토스뱅크', role: 'Product Owner', period: '2023.05 – 2024.09' },
+	{ org: '원티드랩', role: 'Product Owner', period: '2022.09 – 2023.05' },
+	{ org: '버킷플레이스 (오늘의집)', role: 'Product Owner', period: '2021.07 – 2022.05' },
+	{ org: '우아한형제들 (배달의민족)', role: 'Product Manager', period: '2020.05 – 2021.06' },
+	{ org: 'SSG.COM', role: 'Service Planner', period: '2016.03 – 2020.05' },
+];
+
+const work = [
+	{ org: '토스뱅크', desc: '서민금융 대출 햇살론뱅크를 만들어, 중저신용 고객에게 쉬운 대출 경험을 제공했습니다.' },
+	{ org: '토스뱅크', desc: '신분증 OCR 모듈을 자체 개발해, 비대면 인증 완료 전환율을 끌어올렸습니다.' },
+	{ org: '배달의민족', desc: '라이더 배달지표와 인센티브를 설계해, 배달 품질(수락율, 배달시간)을 높였습니다.' },
+	{ org: '오늘의집', desc: '가구에 특화된 배송관리 시스템(TMS)을 0에서 1로 구축했습니다.' },
+	{ org: '원티드', desc: '통합검색을 만들어, 흩어져 있던 커리어 경험을 하나로 연결했습니다.' },
+	{ org: '29CM', desc: '셀러가 직접 할인을 관리하는 시스템을 만들어, 건강한 가격경쟁 생태계를 열었습니다.' },
+	{ org: '레브잇', desc: '메인홈 개편, 신선보장, 커머스 도메인 리팩토링 등 커머스 플랫폼 전반을 고도화하고 있습니다.' },
+	{ org: 'SSG닷컴', desc: '급상승 트렌드 검색·추천, 장보기 특화 검색 등 검색과 전시 경험을 개선했습니다.' },
+];
 ---
 
-<Layout
-	title="About"
-	description="Who writes Start from the problem, not the solution."
-	pubDate={new Date('August 25 2026')}
->
-	<p>
-		I build products. My job is to define what to build and why, so that designers and engineers can
-		spend their energy on work that actually matters.
-	</p>
-	<p>
-		This site is where I turn the design thinking course I have been teaching to PMs into a written
-		series. It is about starting from the problem instead of the solution, digging to the root
-		cause, and building hypotheses on cause and effect.
-	</p>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`About · ${SITE_TITLE}`} description="김성재 · 프로덕트 리드. 커머스, 핀테크, 물류 플랫폼에서 고객 문제를 풀어온 11년차 제품 담당자." />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="term">
+				<span class="line"><span class="p">$</span> cat about.md</span>
+			</div>
+			<h1>About</h1>
+			<p class="lead">
+				제품을 만드는 사람입니다. 무엇을 왜 만들지 정의해서, 디자이너와 개발자가 정말 임팩트 있는
+				일에 집중하도록 돕습니다. 커머스, 핀테크, 물류 같은 플랫폼 비즈니스에서 11년째 고객의 문제를
+				풀며 제품과 사업의 성장에 기여해왔습니다.
+			</p>
 
-	<h2>Now</h2>
-	<p>
-		<!-- TODO: 현재 소속과 역할 한 줄 -->
-		Product owner. Focused on defining problems, framing hypotheses, and shaping experiences.
-	</p>
+			<section class="block">
+				<p class="comment">// now</p>
+				<p>
+					레브잇(올웨이즈)에서 Commerce, CS&Seller, Search&Recommend 세 스쿼드(약 15명)를
+					리드합니다. 커머스 전반의 문제를 정의하고 제품 방향을 설계하며, 각 스쿼드의 성장을
+					돕습니다.
+				</p>
+			</section>
 
-	<h2>Experience</h2>
-	<ul>
-		<!-- TODO: 이력서에서 핵심 경력만. 회사 · 역할 · 기간 -->
-		<li>회사 · 역할 · 기간</li>
-	</ul>
+			<section class="block">
+				<p class="comment">// what i do</p>
+				<ul class="dolist">
+					<li>고객에게 몰입해 문제를 정의하고, 제품으로 해결합니다.</li>
+					<li>회사의 비전과 사업을 이해해 제품의 방향으로 옮깁니다.</li>
+					<li>복잡한 이해관계 속에서 최적점을 찾습니다. 플랫폼 제품을 10년 넘게 다뤘습니다.</li>
+					<li>임팩트를 위해 치열하게 일하는 단단한 팀을 만듭니다.</li>
+					<li>필요한 것은 AI로 직접 만들어 업무를 효율화하고 제품을 실험합니다.</li>
+				</ul>
+			</section>
 
-	<h2>Selected work</h2>
-	<ul>
-		<!-- TODO: 대표 프로젝트 몇 개. "이런 목적으로 이런 프로젝트를 했다" 수준으로 -->
-		<li>프로젝트 이름 — 어떤 목적으로 무엇을 했는지 한 줄</li>
-	</ul>
+			<section class="block">
+				<p class="comment">// experience</p>
+				<ul class="rows">
+					{
+						experience.map((e) => (
+							<li>
+								<span class="org">{e.org}</span>
+								<span class="role">{e.role}</span>
+								<span class="period">{e.period}</span>
+							</li>
+						))
+					}
+				</ul>
+			</section>
 
-	<h2>Contact</h2>
-	<p>
-		<!-- TODO: 링크드인 / 이메일 -->
-		Reach me on LinkedIn.
-	</p>
-</Layout>
+			<section class="block">
+				<p class="comment">// selected work</p>
+				<ul class="work">
+					{
+						work.map((w) => (
+							<li>
+								<span class="wo">{w.org}</span>
+								<span class="wd">{w.desc}</span>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<section class="block">
+				<p class="comment">// background</p>
+				<ul class="dolist">
+					<li>경희대학교 경영학·역사학(복수전공)</li>
+					<li>영어 비즈니스 레벨. 태국 자회사와 영어로 협업했습니다.</li>
+					<li>자주 쓰는 도구: Claude, Claude Code, Databricks, Amplitude, SQL</li>
+					<li>WSET Level 3. 와인을 좋아해서 자격증까지 땄습니다.</li>
+				</ul>
+			</section>
+
+			<section class="block">
+				<p class="comment">// contact</p>
+				<ul class="links">
+					<li><span class="k">linkedin</span> <a href="https://www.linkedin.com/in/seongjae-kim-747b35151/" target="_blank" rel="me">linkedin.com/in/seongjae-kim</a></li>
+					<li><span class="k">github</span> <a href="https://github.com/felixae-kim" target="_blank" rel="me">github.com/felixae-kim</a></li>
+				</ul>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.term {
+		font-family: var(--font-mono);
+		font-size: 0.9rem;
+		color: var(--muted);
+		margin-bottom: 0.6rem;
+	}
+	.term .p {
+		color: var(--green);
+	}
+	h1 {
+		margin-bottom: 1.2rem;
+	}
+	.lead {
+		color: var(--fg);
+		max-width: 44ch;
+	}
+	.block {
+		margin-top: 2.5rem;
+	}
+	.comment {
+		font-family: var(--font-mono);
+		color: var(--muted);
+		font-size: 0.85rem;
+		margin: 0 0 0.9rem;
+	}
+
+	.dolist {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	.dolist li {
+		position: relative;
+		padding-left: 1.3rem;
+		margin: 0 0 0.5rem;
+		color: var(--fg);
+	}
+	.dolist li::before {
+		content: '▸';
+		position: absolute;
+		left: 0;
+		color: var(--green);
+	}
+
+	.rows {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		font-family: var(--font-mono);
+		border-top: 1px solid var(--border);
+	}
+	.rows li {
+		display: flex;
+		align-items: baseline;
+		gap: 0.9rem;
+		padding: 0.7rem 0.2rem;
+		border-bottom: 1px solid var(--border);
+		margin: 0;
+	}
+	.rows .org {
+		flex: 0 0 auto;
+		color: var(--fg-strong);
+		font-size: 0.9rem;
+	}
+	.rows .role {
+		flex: 1 1 auto;
+		color: var(--muted);
+		font-size: 0.82rem;
+	}
+	.rows .period {
+		flex: 0 0 auto;
+		color: var(--muted);
+		font-size: 0.78rem;
+		white-space: nowrap;
+	}
+
+	.work {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	.work li {
+		display: flex;
+		gap: 0.9rem;
+		padding: 0.55rem 0;
+		margin: 0;
+	}
+	.work .wo {
+		flex: 0 0 5.5rem;
+		font-family: var(--font-mono);
+		font-size: 0.82rem;
+		color: var(--green);
+		padding-top: 0.15rem;
+	}
+	.work .wd {
+		flex: 1 1 auto;
+		color: var(--fg);
+	}
+
+	.links {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		font-family: var(--font-mono);
+		font-size: 0.9rem;
+	}
+	.links li {
+		display: flex;
+		gap: 0.8rem;
+		padding: 0.3rem 0;
+		margin: 0;
+	}
+	.links .k {
+		color: var(--muted);
+		min-width: 5.5rem;
+	}
+	.links a {
+		color: var(--accent);
+	}
+
+	@media (max-width: 600px) {
+		.rows li {
+			flex-wrap: wrap;
+			gap: 0.2rem 0.8rem;
+		}
+		.rows .org {
+			flex: 1 1 100%;
+			order: 1;
+		}
+		.rows .role {
+			order: 2;
+		}
+		.rows .period {
+			order: 2;
+			margin-left: auto;
+		}
+		.work li {
+			flex-direction: column;
+			gap: 0.2rem;
+		}
+		.work .wo {
+			flex: 0 0 auto;
+		}
+	}
+</style>
