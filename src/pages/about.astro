@@ -2,7 +2,12 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import { existsSync } from 'node:fs';
 import { SITE_TITLE } from '../consts';
+
+const photo = ['profile.jpg', 'profile.jpeg', 'profile.png', 'profile.webp'].find((f) =>
+	existsSync(`public/${f}`),
+);
 
 const principles = [
 	{ en: 'Possibility', ko: '가능성', desc: '제품의 성공은 보장되지 않습니다. 감이 아니라 명확한 근거를 레버로 삼아 성공 확률을 높입니다.' },
@@ -72,14 +77,25 @@ const lectures = [
 	<body>
 		<Header />
 		<main>
-			<div class="term"><span class="p">$</span> cat about.md</div>
-			<h1>About</h1>
-			<p class="lead">
-				제품을 만드는 사람입니다. 무엇을 왜 만들지 정의해서, 디자이너와 개발자가 정말 임팩트 있는
-				일에만 집중하게 만드는 것이 제 일입니다. 커머스, 핀테크, 물류 같은 플랫폼 비즈니스에서 11년.
-				많은 곳을 거쳤지만 목표는 늘 같았습니다. 사용자와 임팩트. 경쟁자와 똑같은 서비스여도 고객에게
-				몰입하면 답이 나온다고 믿었고, 그렇게 시장 1위 제품도, 0에서 1을 만드는 일도 해냈습니다.
-			</p>
+			<div class="about-head">
+				{
+					photo ? (
+						<img class="avatar" src={`/${photo}`} alt="Seongjae Kim" width="120" height="120" />
+					) : (
+						<div class="avatar ph" aria-hidden="true">SK</div>
+					)
+				}
+				<div class="about-intro">
+					<div class="term"><span class="p">$</span> cat about.md</div>
+					<h1>About</h1>
+					<p class="lead">
+						제품을 만드는 사람입니다. 무엇을 왜 만들지 정의해서, 디자이너와 개발자가 정말 임팩트 있는
+						일에만 집중하게 만드는 것이 제 일입니다. 커머스, 핀테크, 물류 같은 플랫폼 비즈니스에서 11년.
+						많은 곳을 거쳤지만 목표는 늘 같았습니다. 사용자와 임팩트. 경쟁자와 똑같은 서비스여도 고객에게
+						몰입하면 답이 나온다고 믿었고, 그렇게 시장 1위 제품도, 0에서 1을 만드는 일도 해냈습니다.
+					</p>
+				</div>
+			</div>
 			<blockquote class="epigraph">
 				"Only the market can tell if your idea is good. Everything else is just opinion."
 			</blockquote>
@@ -188,6 +204,36 @@ const lectures = [
 	}
 	.term .p {
 		color: var(--green);
+	}
+	.about-head {
+		display: flex;
+		align-items: flex-start;
+		gap: 1.6rem;
+		margin-bottom: 1.4rem;
+	}
+	.about-head .avatar {
+		flex: 0 0 auto;
+		width: 120px;
+		height: 120px;
+		border-radius: 50%;
+		border: 1px solid var(--border-strong);
+		margin-top: 0.3rem;
+	}
+	.about-head img.avatar {
+		object-fit: cover;
+	}
+	.about-head .ph {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--surface);
+		color: var(--muted);
+		font-family: var(--font-mono);
+		font-size: 1.8rem;
+	}
+	.about-intro {
+		flex: 1 1 auto;
+		min-width: 0;
 	}
 	h1 {
 		margin-bottom: 1.2rem;
@@ -379,6 +425,10 @@ const lectures = [
 	}
 
 	@media (max-width: 600px) {
+		.about-head {
+			flex-direction: column;
+			gap: 1rem;
+		}
 		.rows li,
 		.lec li {
 			flex-wrap: wrap;
