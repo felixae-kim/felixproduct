@@ -4,6 +4,12 @@ import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE_TITLE } from '../consts';
 
+const principles = [
+	{ en: 'Possibility', ko: '가능성', desc: '제품의 성공은 보장되지 않습니다. 감이 아니라 명확한 근거를 레버로 삼아 성공 확률을 높입니다.' },
+	{ en: 'Simplicity', ko: '단순함', desc: '복잡함을 사용자에게 떠넘기지 않습니다. 어려운 문제일수록 가장 단순한 경험으로 풉니다.' },
+	{ en: 'Absorbency', ko: '흡수력', desc: '도메인의 경계를 두지 않습니다. 낯선 문제는 모른다고 인정하고, 치열하게 배워 내 것으로 만듭니다.' },
+];
+
 const experience = [
 	{ org: '레브잇 (Alwayz)', role: 'Commerce Product Lead', period: '2026.03 – 현재' },
 	{ org: '부산 핀테크 허브', role: 'Lecturer', period: '2025.11 – 2026.02' },
@@ -17,14 +23,44 @@ const experience = [
 ];
 
 const work = [
-	{ org: '토스뱅크', desc: '서민금융 대출 햇살론뱅크를 만들어, 중저신용 고객에게 쉬운 대출 경험을 제공했습니다.' },
-	{ org: '토스뱅크', desc: '신분증 OCR 모듈을 자체 개발해, 비대면 인증 완료 전환율을 끌어올렸습니다.' },
-	{ org: '배달의민족', desc: '라이더 배달지표와 인센티브를 설계해, 배달 품질(수락율, 배달시간)을 높였습니다.' },
-	{ org: '오늘의집', desc: '가구에 특화된 배송관리 시스템(TMS)을 0에서 1로 구축했습니다.' },
+	{ org: '토스뱅크', desc: '서민금융 대출 햇살론뱅크를 만들어, 복잡한 심사를 스크래핑으로 자동화하고 가장 단순한 대출 경험으로 시장 점유율 1위를 만들었습니다.' },
+	{ org: '토스뱅크', desc: '신형 신분증 인식 실패로 막히던 계좌개설을, 자체 OCR 모델과 수기 검수 프로세스를 결합해 빈틈없이 풀었습니다.' },
+	{ org: '오늘의집', desc: '날짜를 확약할 수 없던 가구 배송을, 접수부터 설치까지 관리하는 지정일 배송 시스템(TMS)을 0에서 1로 구축해 예측 가능하게 만들었습니다.' },
+	{ org: '배달의민족', desc: '라이더 배달지표와 인센티브를 설계해, 급증하는 배달 건에도 배달 품질을 지켰습니다.' },
 	{ org: '원티드', desc: '통합검색을 만들어, 흩어져 있던 커리어 경험을 하나로 연결했습니다.' },
-	{ org: '29CM', desc: '셀러가 직접 할인을 관리하는 시스템을 만들어, 건강한 가격경쟁 생태계를 열었습니다.' },
 	{ org: '레브잇', desc: '메인홈 개편, 신선보장, 커머스 도메인 리팩토링 등 커머스 플랫폼 전반을 고도화하고 있습니다.' },
-	{ org: 'SSG닷컴', desc: '급상승 트렌드 검색·추천, 장보기 특화 검색 등 검색과 전시 경험을 개선했습니다.' },
+];
+
+const lectures = [
+	{
+		group: '기업 · 기관',
+		items: [
+			{ org: '글로벌핀테크진흥센터 (FINPC)', course: '디지털금융 전문인력 양성과정' },
+			{ org: '삼성금융연수원', course: '디지털 입문 과정: 디지털서비스 A to Z' },
+			{ org: '삼성화재', course: '디지털 서비스 기획 과정' },
+			{ org: 'KB금융', course: '디지털 서비스 기획 과정' },
+			{ org: '삼성생명', course: '디자인씽킹 과정' },
+			{ org: '하나금융TI', course: '디자인씽킹 과정' },
+			{ org: 'CJ올리브네트웍스', course: 'AX 해커톤 디자인씽킹 과정' },
+			{ org: '네이버클라우드', course: '프로덕트 리딩 역량 향상 과정' },
+			{ org: '부산 핀테크 허브', course: '핀테크 스타트업 대표·PM 대상 제품 강의' },
+		],
+	},
+	{
+		group: '온라인',
+		items: [
+			{ org: '패스트캠퍼스', course: '한 번에 끝내는 서비스 기획의 모든 것 - O2O 서비스 기획' },
+			{ org: '패스트캠퍼스', course: '메가바이트 스쿨 프로덕트 매니저 과정 (멘토링)' },
+			{ org: 'SW Camp', course: '프로덕트 매니저 과정 (멘토링)' },
+		],
+	},
+	{
+		group: '대학',
+		items: [
+			{ org: '이화여자대학교', course: 'e커머스 서비스 기획 과정' },
+			{ org: '전북대학교', course: '스타트업 디자인 스쿨' },
+		],
+	},
 ];
 ---
 
@@ -36,9 +72,7 @@ const work = [
 	<body>
 		<Header />
 		<main>
-			<div class="term">
-				<span class="line"><span class="p">$</span> cat about.md</span>
-			</div>
+			<div class="term"><span class="p">$</span> cat about.md</div>
 			<h1>About</h1>
 			<p class="lead">
 				제품을 만드는 사람입니다. 무엇을 왜 만들지 정의해서, 디자이너와 개발자가 정말 임팩트 있는
@@ -46,6 +80,9 @@ const work = [
 				많은 곳을 거쳤지만 목표는 늘 같았습니다. 사용자와 임팩트. 경쟁자와 똑같은 서비스여도 고객에게
 				몰입하면 답이 나온다고 믿었고, 그렇게 시장 1위 제품도, 0에서 1을 만드는 일도 해냈습니다.
 			</p>
+			<blockquote class="epigraph">
+				"Only the market can tell if your idea is good. Everything else is just opinion."
+			</blockquote>
 
 			<section class="block">
 				<p class="comment">// now</p>
@@ -57,13 +94,18 @@ const work = [
 			</section>
 
 			<section class="block">
-				<p class="comment">// what i do</p>
-				<ul class="dolist">
-					<li>고객에게 몰입해 문제를 정의하고, 제품으로 해결합니다.</li>
-					<li>회사의 비전과 사업을 이해해 제품의 방향으로 옮깁니다.</li>
-					<li>복잡한 이해관계 속에서 최적점을 찾습니다. 플랫폼 제품을 10년 넘게 다뤘습니다.</li>
-					<li>임팩트를 위해 치열하게 일하는 단단한 팀을 만듭니다.</li>
-					<li>필요한 것은 AI로 직접 만들어 업무를 효율화하고 제품을 실험합니다.</li>
+				<p class="comment">// how i work</p>
+				<ul class="principles">
+					{
+						principles.map((pr) => (
+							<li>
+								<span class="pt">
+									{pr.en} <span class="pk">{pr.ko}</span>
+								</span>
+								<span class="pd">{pr.desc}</span>
+							</li>
+						))
+					}
 				</ul>
 			</section>
 
@@ -97,6 +139,25 @@ const work = [
 			</section>
 
 			<section class="block">
+				<p class="comment">// lectures</p>
+				{
+					lectures.map((lg) => (
+						<div class="lgroup">
+							<p class="llabel">{lg.group}</p>
+							<ul class="lec">
+								{lg.items.map((it) => (
+									<li>
+										<span class="lorg">{it.org}</span>
+										<span class="lcourse">{it.course}</span>
+									</li>
+								))}
+							</ul>
+						</div>
+					))
+				}
+			</section>
+
+			<section class="block">
 				<p class="comment">// background</p>
 				<ul class="dolist">
 					<li>경희대학교 경영학·역사학(복수전공)</li>
@@ -109,8 +170,8 @@ const work = [
 			<section class="block">
 				<p class="comment">// contact</p>
 				<ul class="links">
+					<li><span class="k">email</span> <a href="mailto:hzory74@gmail.com">hzory74@gmail.com</a></li>
 					<li><span class="k">linkedin</span> <a href="https://www.linkedin.com/in/seongjae-kim-747b35151/" target="_blank" rel="me">linkedin.com/in/seongjae-kim</a></li>
-					<li><span class="k">github</span> <a href="https://github.com/felixae-kim" target="_blank" rel="me">github.com/felixae-kim</a></li>
 				</ul>
 			</section>
 		</main>
@@ -133,10 +194,19 @@ const work = [
 	}
 	.lead {
 		color: var(--fg);
-		max-width: 44ch;
+		max-width: 46ch;
+	}
+	.epigraph {
+		border-left: 3px solid var(--accent);
+		padding: 0.1rem 0 0.1rem 1rem;
+		margin: 1.4rem 0 0;
+		font-family: var(--font-mono);
+		font-size: 0.9rem;
+		color: var(--muted);
+		line-height: 1.6;
 	}
 	.block {
-		margin-top: 2.5rem;
+		margin-top: 2.6rem;
 	}
 	.comment {
 		font-family: var(--font-mono);
@@ -145,24 +215,38 @@ const work = [
 		margin: 0 0 0.9rem;
 	}
 
-	.dolist {
+	/* principles */
+	.principles {
 		list-style: none;
 		padding: 0;
 		margin: 0;
 	}
-	.dolist li {
-		position: relative;
-		padding-left: 1.3rem;
-		margin: 0 0 0.5rem;
+	.principles li {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		padding: 0.6rem 0;
+		border-bottom: 1px solid var(--border);
+		margin: 0;
+	}
+	.principles li:last-child {
+		border-bottom: none;
+	}
+	.pt {
+		font-family: var(--font-mono);
+		font-weight: 600;
+		color: var(--fg-strong);
+		font-size: 0.95rem;
+	}
+	.pk {
+		color: var(--green);
+		font-size: 0.85rem;
+	}
+	.pd {
 		color: var(--fg);
 	}
-	.dolist li::before {
-		content: '▸';
-		position: absolute;
-		left: 0;
-		color: var(--green);
-	}
 
+	/* experience */
 	.rows {
 		list-style: none;
 		padding: 0;
@@ -195,6 +279,7 @@ const work = [
 		white-space: nowrap;
 	}
 
+	/* selected work */
 	.work {
 		list-style: none;
 		padding: 0;
@@ -218,6 +303,60 @@ const work = [
 		color: var(--fg);
 	}
 
+	/* lectures */
+	.lgroup {
+		margin-bottom: 1.4rem;
+	}
+	.llabel {
+		font-family: var(--font-mono);
+		font-size: 0.8rem;
+		color: var(--green);
+		margin: 0 0 0.4rem;
+	}
+	.lec {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		border-top: 1px solid var(--border);
+	}
+	.lec li {
+		display: flex;
+		align-items: baseline;
+		gap: 0.9rem;
+		padding: 0.5rem 0.2rem;
+		border-bottom: 1px solid var(--border);
+		margin: 0;
+	}
+	.lec .lorg {
+		flex: 0 0 auto;
+		font-family: var(--font-mono);
+		font-size: 0.85rem;
+		color: var(--fg-strong);
+	}
+	.lec .lcourse {
+		flex: 1 1 auto;
+		color: var(--muted);
+		font-size: 0.9rem;
+	}
+
+	/* background + contact */
+	.dolist {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	.dolist li {
+		position: relative;
+		padding-left: 1.3rem;
+		margin: 0 0 0.5rem;
+		color: var(--fg);
+	}
+	.dolist li::before {
+		content: '▸';
+		position: absolute;
+		left: 0;
+		color: var(--green);
+	}
 	.links {
 		list-style: none;
 		padding: 0;
@@ -240,7 +379,8 @@ const work = [
 	}
 
 	@media (max-width: 600px) {
-		.rows li {
+		.rows li,
+		.lec li {
 			flex-wrap: wrap;
 			gap: 0.2rem 0.8rem;
 		}
@@ -254,6 +394,9 @@ const work = [
 		.rows .period {
 			order: 2;
 			margin-left: auto;
+		}
+		.lec .lorg {
+			flex: 1 1 100%;
 		}
 		.work li {
 			flex-direction: column;
