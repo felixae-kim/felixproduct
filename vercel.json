@@ -9,7 +9,7 @@
 		{ "source": "/thinking/", "destination": "/product", "permanent": true },
 		{ "source": "/thinking/:slug", "destination": "/product/:slug", "permanent": true },
 		{ "source": "/thinking/:slug/", "destination": "/product/:slug/", "permanent": true },
-		{ "source": "/think/:slug", "destination": "/product/:slug", "permanent": true },
-		{ "source": "/think/:slug/", "destination": "/product/:slug/", "permanent": true }
+		{ "source": "/think/:slug(\\d[^/]*)", "destination": "/product/:slug", "permanent": true },
+		{ "source": "/think/:slug(\\d[^/]*)/", "destination": "/product/:slug/", "permanent": true }
 	]
 }
