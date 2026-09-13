@@ -19,6 +19,9 @@ const posts = defineCollection({
 			seriesDescription: z.string().optional(),
 			// Surfaced on the home page as an entry point, newest first.
 			featured: z.boolean().default(false),
+			// Kept out of the built site. Still rendered by `astro dev` so a
+			// work-in-progress can be previewed without publishing it.
+			draft: z.boolean().default(false),
 		}),
 });
 

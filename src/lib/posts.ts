@@ -23,8 +23,17 @@ export const seriesNo = (post: Post) => post.id.match(/^\d+/)?.[0] ?? null;
 
 const byDateDesc = (a: Post, b: Post) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
 
+/**
+ * Every read of the collection goes through here, so a draft cannot reach the
+ * built site through a listing, a series, the RSS feed or its own route.
+ * `astro dev` keeps drafts visible so they can be previewed while being written.
+ */
+export async function allPosts() {
+	return (await getCollection('posts')).filter((p) => import.meta.env.DEV || !p.data.draft);
+}
+
 export async function getPosts(category?: Category) {
-	const posts = await getCollection('posts');
+	const posts = await allPosts();
 	return posts.filter((p) => !category || p.data.category === category).sort(byDateDesc);
 }
 
@@ -43,7 +52,7 @@ const inReadingOrder = (posts: Post[]) => [...posts].sort((a, b) => a.id.localeC
 export async function getSeriesContext(post: Post) {
 	if (!post.data.series) return {};
 	const seriesPosts = inReadingOrder(
-		(await getCollection('posts')).filter((p) => p.data.series === post.data.series),
+		(await allPosts()).filter((p) => p.data.series === post.data.series),
 	);
 	const i = seriesPosts.findIndex((p) => p.id === post.id);
 	return {
