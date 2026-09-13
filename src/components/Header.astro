@@ -5,11 +5,12 @@ import HeaderLink from './HeaderLink.astro';
 <header>
 	<nav>
 		<a class="brand" href="/">
-			<span class="prompt">~</span> seongjae.kim
+			<span class="prompt">~</span> <span class="label">seongjae.</span>kim
 		</a>
 		<div class="links">
 			<HeaderLink href="/">home</HeaderLink>
-			<HeaderLink href="/blog">writing</HeaderLink>
+			<HeaderLink href="/product">product</HeaderLink>
+			<HeaderLink href="/thinking">thinking</HeaderLink>
 			<HeaderLink href="/about">about</HeaderLink>
 		</div>
 	</nav>
@@ -66,8 +67,15 @@ import HeaderLink from './HeaderLink.astro';
 	}
 	@media (max-width: 520px) {
 		.links :global(a) {
-			padding: 0.3em 0.4em;
+			padding: 0.3em 0.35em;
+			font-size: 0.82rem;
+		}
+		.brand {
 			font-size: 0.85rem;
+		}
+		/* Four links plus the brand need the room on a phone. */
+		.brand .label {
+			display: none;
 		}
 	}
 </style>
