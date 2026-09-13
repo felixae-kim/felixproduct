@@ -1,6 +1,5 @@
 {
 	"$schema": "https://openapi.vercel.sh/vercel.json",
-	"comment": "The series has moved /blog -> /thinking -> /think -> /product. Every old form points straight at the current one rather than chaining. /think itself is still a real (empty) listing page, so only its post paths redirect.",
 	"redirects": [
 		{ "source": "/blog", "destination": "/product", "permanent": true },
 		{ "source": "/blog/", "destination": "/product", "permanent": true },

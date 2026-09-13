@@ -6,11 +6,11 @@ export type Category = Post['data']['category'];
 export const CATEGORIES = {
 	product: {
 		heading: 'Product',
-		blurb: '제품을 만드는 방법. 뜯어보고, 고치고, 그 과정을 남깁니다.',
+		blurb: '제품을 뜯어보고, 고치고, 그 과정과 생각들을 남깁니다.',
 	},
 	think: {
 		heading: 'Think',
-		blurb: '제품 바깥에서 하는 생각들.',
+		blurb: '진지하고 가끔은 가볍고, 그때그때 다른 생각들.',
 	},
 } as const satisfies Record<Category, { heading: string; blurb: string }>;
 
