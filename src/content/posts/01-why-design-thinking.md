@@ -2,7 +2,7 @@
 title: '1편. 지금 왜 디자인 씽킹인가'
 description: '새로운 서비스보다 날카로운 서비스의 시대. 디자인 씽킹이 무엇이고, 왜 지금 제품 만드는 사람에게 필요한지 정리합니다.'
 pubDate: '2026-08-25'
-category: 'think'
+category: 'product'
 series: '디자인 씽킹 : 고객중심은 태도가 아니다'
 ---
 

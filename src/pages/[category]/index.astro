@@ -3,8 +3,15 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import PostList from '../../components/PostList.astro';
+import SeriesCarousel from '../../components/SeriesCarousel.astro';
 import { SITE_TITLE } from '../../consts';
-import { type Category, CATEGORIES, CATEGORY_KEYS, getPosts } from '../../lib/posts';
+import {
+	type Category,
+	CATEGORIES,
+	CATEGORY_KEYS,
+	getPosts,
+	getSeriesList,
+} from '../../lib/posts';
 
 export function getStaticPaths() {
 	return CATEGORY_KEYS.map((category) => ({ params: { category } }));
@@ -13,6 +20,7 @@ export function getStaticPaths() {
 const { category } = Astro.params as { category: Category };
 const { heading, blurb } = CATEGORIES[category];
 const posts = await getPosts(category);
+const series = await getSeriesList(category);
 // A series reads front to back; standalone posts read newest first.
 const ordered = posts.every((p) => p.data.series);
 if (ordered) posts.reverse();
@@ -28,9 +36,13 @@ if (ordered) posts.reverse();
 		<main>
 			<p class="comment">// {blurb}</p>
 			<h1>{heading}</h1>
+			{series.length > 0 && <SeriesCarousel series={series} />}
 			{
 				posts.length > 0 ? (
-					<PostList posts={posts} ordered={ordered} />
+					<>
+						<p class="comment all">// all posts</p>
+						<PostList posts={posts} ordered={ordered} />
+					</>
 				) : (
 					<p class="empty">첫 글을 준비하고 있습니다.</p>
 				)
@@ -49,6 +61,9 @@ if (ordered) posts.reverse();
 	}
 	h1 {
 		margin-bottom: 1.6rem;
+	}
+	.comment.all {
+		margin-bottom: 0.9rem;
 	}
 	.empty {
 		color: var(--muted);

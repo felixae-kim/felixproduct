@@ -1,0 +1,172 @@
+---
+import FormattedDate from './FormattedDate.astro';
+import { href, type Series } from '../lib/posts';
+
+interface Props {
+	series: Series[];
+}
+
+const { series } = Astro.props;
+---
+
+<section class="carousel">
+	<div class="head">
+		<p class="comment">// series</p>
+		<div class="arrows" hidden>
+			<button type="button" class="prev" aria-label="이전 연재 보기">←</button>
+			<button type="button" class="next" aria-label="다음 연재 보기">→</button>
+		</div>
+	</div>
+	<ul class="track">
+		{
+			series.map((s) => (
+				<li>
+					<a href={href(s.posts[0])}>
+						<span class="name">{s.name}</span>
+						<span class="desc">{s.posts[0].data.description}</span>
+						<span class="meta">
+							<span class="count">{s.posts.length}편</span>
+							<span class="sep">·</span>
+							<span>
+								최근 <FormattedDate date={s.updated} />
+							</span>
+						</span>
+						<span class="cta">1편부터 읽기 →</span>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<style>
+	.carousel {
+		margin-bottom: 2.5rem;
+	}
+	.head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+	.comment {
+		font-family: var(--font-mono);
+		color: var(--muted);
+		font-size: 0.85rem;
+		margin: 0 0 0.9rem;
+	}
+	.arrows {
+		display: flex;
+		gap: 0.4rem;
+		margin-bottom: 0.9rem;
+	}
+	/* display:flex outranks the browser's [hidden] rule, so restate it. */
+	.arrows[hidden] {
+		display: none;
+	}
+	.arrows button {
+		font-family: var(--font-mono);
+		font-size: 0.85rem;
+		line-height: 1;
+		color: var(--muted);
+		background: var(--surface);
+		border: 1px solid var(--border-strong);
+		border-radius: 6px;
+		padding: 0.35rem 0.6rem;
+		cursor: pointer;
+	}
+	.arrows button:hover {
+		color: var(--fg-strong);
+		border-color: var(--muted);
+	}
+
+	/* Native scroll-snap carousel: no library, and it already works on touch. */
+	.track {
+		display: flex;
+		gap: 1rem;
+		list-style: none;
+		margin: 0;
+		padding: 0 0 0.5rem;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scrollbar-width: thin;
+		scrollbar-color: var(--border-strong) transparent;
+	}
+	.track li {
+		flex: 0 0 min(20rem, 78%);
+		margin: 0;
+		scroll-snap-align: start;
+	}
+	.track a {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		gap: 0.5rem;
+		padding: 1.1rem 1.2rem;
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		background: var(--surface);
+		text-decoration: none;
+	}
+	.track a:hover {
+		border-color: var(--border-strong);
+		text-decoration: none;
+	}
+	.name {
+		color: var(--fg-strong);
+		font-size: 1rem;
+		line-height: 1.45;
+		font-weight: 700;
+	}
+	.track a:hover .name {
+		color: var(--accent);
+	}
+	.desc {
+		color: var(--muted);
+		font-size: 0.85rem;
+		line-height: 1.6;
+		flex: 1 1 auto;
+	}
+	.meta {
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		color: var(--muted);
+	}
+	.meta .count {
+		color: var(--green);
+	}
+	.meta .sep {
+		margin: 0 0.4rem;
+		color: var(--border-strong);
+	}
+	.cta {
+		font-family: var(--font-mono);
+		font-size: 0.78rem;
+		color: var(--accent);
+	}
+</style>
+
+<script>
+	const carousel = document.querySelector<HTMLElement>('.carousel');
+	const track = carousel?.querySelector<HTMLElement>('.track');
+	const arrows = carousel?.querySelector<HTMLElement>('.arrows');
+	if (carousel && track && arrows) {
+		const step = () => {
+			const card = track.firstElementChild as HTMLElement | null;
+			return card ? card.getBoundingClientRect().width + 16 : track.clientWidth;
+		};
+		carousel
+			.querySelector('.prev')
+			?.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+		carousel
+			.querySelector('.next')
+			?.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+
+		// Nothing to page through when every card already fits.
+		const sync = () => {
+			arrows.hidden = track.scrollWidth <= track.clientWidth + 1;
+		};
+		sync();
+		addEventListener('resize', sync);
+	}
+</script>

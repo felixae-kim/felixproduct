@@ -2,7 +2,7 @@
 title: '4편. 고객은 거짓말한다: 서베이, 인터뷰, 관찰'
 description: '사람은 종종 사실과 다르게 답합니다. The Mom Test부터 서베이, 인터뷰, 관찰, 그리고 세 방향을 하나로 겹치는 삼각측량과 공감 지도까지.'
 pubDate: '2026-08-28'
-category: 'think'
+category: 'product'
 series: '디자인 씽킹 : 고객중심은 태도가 아니다'
 ---
 

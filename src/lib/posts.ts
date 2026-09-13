@@ -6,11 +6,11 @@ export type Category = Post['data']['category'];
 export const CATEGORIES = {
 	product: {
 		heading: 'Product',
-		blurb: '제품을 뜯어보고, 고치고, 그 과정을 남깁니다.',
+		blurb: '제품을 만드는 방법. 뜯어보고, 고치고, 그 과정을 남깁니다.',
 	},
 	think: {
 		heading: 'Think',
-		blurb: '제품을 만들며 생각한 것들. 방법론과 그 언저리.',
+		blurb: '제품 바깥에서 하는 생각들.',
 	},
 } as const satisfies Record<Category, { heading: string; blurb: string }>;
 
@@ -33,20 +33,51 @@ export async function getFeatured() {
 	return (await getPosts()).filter((p) => p.data.featured).sort((a, b) => a.id.localeCompare(b.id));
 }
 
+/** A series reads in its authored order, which the filename prefix encodes. */
+const inReadingOrder = (posts: Post[]) => [...posts].sort((a, b) => a.id.localeCompare(b.id));
+
 /**
- * Neighbours within the post's series, ordered by filename so the series reads
- * in its authored order rather than by publish date.
+ * The post's whole series plus its place in it — enough for both the
+ * prev/next links and the table of contents.
  */
-export async function getSeriesNeighbours(post: Post) {
+export async function getSeriesContext(post: Post) {
 	if (!post.data.series) return {};
-	const series = (await getCollection('posts'))
-		.filter((p) => p.data.series === post.data.series)
-		.sort((a, b) => a.id.localeCompare(b.id));
-	const i = series.findIndex((p) => p.id === post.id);
+	const seriesPosts = inReadingOrder(
+		(await getCollection('posts')).filter((p) => p.data.series === post.data.series),
+	);
+	const i = seriesPosts.findIndex((p) => p.id === post.id);
 	return {
-		prev: series[i - 1],
-		next: series[i + 1],
+		seriesPosts,
+		prev: seriesPosts[i - 1],
+		next: seriesPosts[i + 1],
 		position: i + 1,
-		length: series.length,
+		length: seriesPosts.length,
 	};
+}
+
+export type Series = {
+	name: string;
+	posts: Post[];
+	/** Newest publish date in the series, which is what "recently updated" means here. */
+	updated: Date;
+};
+
+/** Series in a category, most recently updated first. */
+export async function getSeriesList(category?: Category): Promise<Series[]> {
+	const grouped = new Map<string, Post[]>();
+	for (const post of await getPosts(category)) {
+		const { series } = post.data;
+		if (!series) continue;
+		grouped.set(series, [...(grouped.get(series) ?? []), post]);
+	}
+	return [...grouped]
+		.map(([name, posts]) => ({
+			name,
+			posts: inReadingOrder(posts),
+			updated: posts.reduce(
+				(max, p) => (p.data.pubDate > max ? p.data.pubDate : max),
+				posts[0].data.pubDate,
+			),
+		}))
+		.sort((a, b) => b.updated.valueOf() - a.updated.valueOf());
 }

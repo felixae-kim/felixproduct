@@ -1,0 +1,157 @@
+---
+import { href, type Post } from '../lib/posts';
+
+interface Props {
+	name: string;
+	posts: Post[];
+	currentId: string;
+}
+
+const { name, posts, currentId } = Astro.props;
+---
+
+<nav class="toc" aria-label="연재 목차">
+	<p class="head">
+		<span class="label">연재 목차</span>
+		<span class="name">{name}</span>
+		<span class="count">{posts.length}편</span>
+	</p>
+	<ol>
+		{
+			posts.map((post, i) => {
+				const current = post.id === currentId;
+				const n = String(i + 1).padStart(2, '0');
+				return (
+					<li class:list={{ current }}>
+						{current ? (
+							<span class="row" aria-current="true">
+								<span class="n">{n}</span>
+								<span class="t">{post.data.title}</span>
+								<span class="here">지금 보는 글</span>
+							</span>
+						) : (
+							<a class="row" href={href(post)}>
+								<span class="n">{n}</span>
+								<span class="t">{post.data.title}</span>
+							</a>
+						)}
+					</li>
+				);
+			})
+		}
+	</ol>
+</nav>
+
+<style>
+	.toc {
+		margin-top: 2.5rem;
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		overflow: hidden;
+	}
+	.head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.2rem 0.6rem;
+		margin: 0;
+		padding: 0.9rem 1.1rem;
+		background: var(--surface);
+		border-bottom: 1px solid var(--border);
+	}
+	.head .label {
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		letter-spacing: 0.12em;
+		color: var(--muted);
+		text-transform: uppercase;
+	}
+	.head .name {
+		color: var(--fg-strong);
+		font-size: 0.95rem;
+	}
+	.head .count {
+		font-family: var(--font-mono);
+		font-size: 0.78rem;
+		color: var(--muted);
+		margin-left: auto;
+	}
+	ol {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		counter-reset: none;
+	}
+	li {
+		margin: 0;
+		border-bottom: 1px solid var(--border);
+	}
+	li:last-child {
+		border-bottom: none;
+	}
+	.row {
+		display: flex;
+		align-items: baseline;
+		gap: 0.85rem;
+		padding: 0.65rem 1.1rem;
+		text-decoration: none;
+		border-left: 2px solid transparent;
+	}
+	a.row:hover {
+		background: var(--surface);
+		text-decoration: none;
+	}
+	.n {
+		flex: 0 0 auto;
+		font-family: var(--font-mono);
+		font-size: 0.8rem;
+		color: var(--muted);
+	}
+	.t {
+		flex: 1 1 auto;
+		color: var(--fg);
+		font-size: 0.9rem;
+		line-height: 1.5;
+	}
+	a.row:hover .t {
+		color: var(--accent);
+	}
+
+	/* The post being read stays put and is marked, so the reader can place it. */
+	li.current {
+		background: var(--surface-2);
+	}
+	li.current .row {
+		border-left-color: var(--green);
+	}
+	li.current .n,
+	li.current .t {
+		color: var(--green);
+		font-weight: 700;
+	}
+	.here {
+		flex: 0 0 auto;
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		color: var(--green);
+		border: 1px solid var(--green);
+		border-radius: 999px;
+		padding: 0.05rem 0.5rem;
+		white-space: nowrap;
+	}
+
+	@media (max-width: 640px) {
+		.row {
+			flex-wrap: wrap;
+			gap: 0.3rem 0.7rem;
+			padding: 0.65rem 0.9rem;
+		}
+		.t {
+			flex: 1 1 100%;
+			order: 3;
+		}
+		.here {
+			margin-left: auto;
+		}
+	}
+</style>

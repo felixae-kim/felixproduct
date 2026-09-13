@@ -5,16 +5,20 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import SeriesToc from '../components/SeriesToc.astro';
 import { CATEGORIES, href, type Post } from '../lib/posts';
 
 type Props = CollectionEntry<'posts'>['data'] & {
+	id: string;
 	prev?: Post;
 	next?: Post;
+	seriesPosts?: Post[];
 	position?: number;
 	length?: number;
 };
 
 const {
+	id,
 	title,
 	description,
 	pubDate,
@@ -24,6 +28,7 @@ const {
 	series,
 	prev,
 	next,
+	seriesPosts,
 	position,
 	length,
 } = Astro.props;
@@ -99,6 +104,12 @@ const {
 					</nav>
 				)
 			}
+			{
+				series && seriesPosts && seriesPosts.length > 1 && (
+					<SeriesToc name={series} posts={seriesPosts} currentId={id} />
+				)
+			}
+
 			<p class="back">
 				<a href={`/${category}`}>← {CATEGORIES[category].heading} 전체 보기</a>
 			</p>

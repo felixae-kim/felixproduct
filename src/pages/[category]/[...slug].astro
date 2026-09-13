@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Post from '../../layouts/Post.astro';
-import { getSeriesNeighbours } from '../../lib/posts';
+import { getSeriesContext } from '../../lib/posts';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('posts');
@@ -13,9 +13,9 @@ export async function getStaticPaths() {
 
 const post = Astro.props;
 const { Content } = await render(post);
-const series = await getSeriesNeighbours(post);
+const series = await getSeriesContext(post);
 ---
 
-<Post {...post.data} {...series}>
+<Post {...post.data} {...series} id={post.id}>
 	<Content />
 </Post>
