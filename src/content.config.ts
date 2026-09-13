@@ -14,6 +14,9 @@ const posts = defineCollection({
 			category: z.enum(['product', 'think']),
 			// Posts sharing a series get prev/next navigation, ordered by filename.
 			series: z.string().optional(),
+			// Describes the series as a whole, not this post. Set it once on any
+			// post in the series; the series card uses it.
+			seriesDescription: z.string().optional(),
 			// Surfaced on the home page as an entry point, newest first.
 			featured: z.boolean().default(false),
 		}),

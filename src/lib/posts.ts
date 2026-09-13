@@ -57,6 +57,8 @@ export async function getSeriesContext(post: Post) {
 
 export type Series = {
 	name: string;
+	/** Describes the whole series; falls back to the opening post until one is written. */
+	description: string;
 	posts: Post[];
 	/** Newest publish date in the series, which is what "recently updated" means here. */
 	updated: Date;
@@ -71,13 +73,19 @@ export async function getSeriesList(category?: Category): Promise<Series[]> {
 		grouped.set(series, [...(grouped.get(series) ?? []), post]);
 	}
 	return [...grouped]
-		.map(([name, posts]) => ({
-			name,
-			posts: inReadingOrder(posts),
-			updated: posts.reduce(
-				(max, p) => (p.data.pubDate > max ? p.data.pubDate : max),
-				posts[0].data.pubDate,
-			),
-		}))
+		.map(([name, posts]) => {
+			const ordered = inReadingOrder(posts);
+			return {
+				name,
+				description:
+					ordered.find((p) => p.data.seriesDescription)?.data.seriesDescription ??
+					ordered[0].data.description,
+				posts: ordered,
+				updated: posts.reduce(
+					(max, p) => (p.data.pubDate > max ? p.data.pubDate : max),
+					posts[0].data.pubDate,
+				),
+			};
+		})
 		.sort((a, b) => b.updated.valueOf() - a.updated.valueOf());
 }
