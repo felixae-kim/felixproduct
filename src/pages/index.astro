@@ -1,21 +1,18 @@
 ---
-import { existsSync } from 'node:fs';
-import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import PostList from '../components/PostList.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { CATEGORIES, CATEGORY_KEYS, getFeatured, getPosts } from '../lib/posts';
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
-const recent = posts.slice(0, 5);
-const total = posts.length;
-
-// Use a photo from /public if present, otherwise fall back to initials.
-const photo = ['profile.jpg', 'profile.jpeg', 'profile.png', 'profile.webp'].find((f) =>
-	existsSync(`public/${f}`),
+const featured = (await getFeatured()).slice(0, 3);
+const sections = await Promise.all(
+	CATEGORY_KEYS.map(async (key) => ({
+		key,
+		...CATEGORIES[key],
+		posts: await getPosts(key),
+	})),
 );
 ---
 
@@ -28,38 +25,73 @@ const photo = ['profile.jpg', 'profile.jpeg', 'profile.png', 'profile.webp'].fin
 		<Header />
 		<main>
 			<section class="hero">
-				{
-					photo ? (
-						<img class="avatar" src={`/${photo}`} alt="Seongjae Kim" width="112" height="112" />
-					) : (
-						<div class="avatar ph" aria-hidden="true">SK</div>
-					)
-				}
-				<div class="intro">
-					<div class="term">
-						<span class="p">$</span> whoami <span class="arrow">→</span> Seongjae Kim · product owner
-					</div>
-					<h1>안녕하세요, 김성재입니다.</h1>
-					<p class="lead">
-						제품을 만드는 사람입니다. 커머스, 핀테크, 물류 플랫폼에서 11년. 항상 목표는
-						하나였습니다. 사용자와 임팩트. 경쟁자와 똑같은 서비스여도, 고객에게 몰입하면 답이
-						나온다고 믿습니다. 그렇게 시장 1위 제품도, 0에서 1을 만드는 일도 해냈습니다.
-						이곳에는 제품을 만들며 배우고 고민한 것들을 씁니다. 디자인 씽킹은 그 시작입니다.
-					</p>
-					<p class="more">
-						<a href="/about">→ 더 알아보기</a>
-						<span class="sep">·</span>
-						<a href="https://www.linkedin.com/in/seongjae-kim-747b35151/" target="_blank" rel="me">linkedin</a>
-					</p>
-				</div>
+				<p class="term">
+					<span class="p">$</span> whoami <span class="arrow">→</span> product owner · 커머스 · 핀테크
+					· 물류 · 11년
+				</p>
+				<h1>
+					경쟁자와 똑같은 서비스여도,<br />
+					고객에게 몰입하면 답이 나옵니다.
+				</h1>
+				<p class="lead">
+					시장 1위 제품도, 0에서 1을 만드는 일도 그렇게 해냈습니다. 제품을 뜯어보고 고치면서 배운
+					것들을 여기에 씁니다.
+				</p>
+				<p class="more">
+					<a href="/about">→ 더 알아보기</a>
+					<span class="sep">·</span>
+					<a href="https://www.linkedin.com/in/seongjae-kim-747b35151/" target="_blank" rel="me"
+						>linkedin</a
+					>
+				</p>
 			</section>
 
-			<section class="block">
-				<div class="head">
-					<p class="comment">// recent writing</p>
-					<a class="all" href="/blog">→ all writing ({total})</a>
+			{
+				featured.length > 0 && (
+					<section class="block">
+						<div class="head">
+							<p class="comment">// start here</p>
+						</div>
+						<PostList posts={featured} />
+					</section>
+				)
+			}
+
+			{
+				sections.map((s) => (
+					<section class="block">
+						<div class="head">
+							<p class="comment">// {s.key}</p>
+							{s.posts.length > 0 && (
+								<a class="all" href={`/${s.key}`}>
+									→ all ({s.posts.length})
+								</a>
+							)}
+						</div>
+						{s.posts.length > 0 ? (
+							<PostList posts={s.posts.slice(0, 3)} />
+						) : (
+							<p class="empty">{s.blurb} 곧 시작합니다.</p>
+						)}
+					</section>
+				))
+			}
+
+			<section class="strip">
+				<div>
+					<p class="label">NOW</p>
+					<p>Product owner</p>
 				</div>
-				<PostList posts={recent} />
+				<div>
+					<p class="label">CHANNELS</p>
+					<p>
+						<a href="https://www.linkedin.com/in/seongjae-kim-747b35151/" target="_blank" rel="me"
+							>LinkedIn</a
+						>
+						<span class="sep">·</span>
+						<a href="/rss.xml">RSS</a>
+					</p>
+				</div>
 			</section>
 		</main>
 		<Footer />
@@ -68,80 +100,45 @@ const photo = ['profile.jpg', 'profile.jpeg', 'profile.png', 'profile.webp'].fin
 
 <style>
 	.hero {
-		display: flex;
-		align-items: center;
-		gap: 1.8rem;
-		padding: 1.5rem 0 2.5rem;
+		padding: 2.5rem 0 3rem;
 		border-bottom: 1px solid var(--border);
-		margin-bottom: 2.5rem;
-	}
-	.avatar {
-		flex: 0 0 auto;
-		width: 112px;
-		height: 112px;
-		border-radius: 50%;
-		border: 1px solid var(--border-strong);
-	}
-	img.avatar {
-		object-fit: cover;
-	}
-	.ph {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background: var(--surface);
-		color: var(--muted);
-		font-family: var(--font-mono);
-		font-size: 1.7rem;
-		letter-spacing: 0.05em;
-	}
-	.intro {
-		flex: 1 1 auto;
-		min-width: 0;
+		margin-bottom: 3rem;
 	}
 	.term {
 		font-family: var(--font-mono);
 		font-size: 0.85rem;
 		color: var(--muted);
-		margin-bottom: 0.7rem;
+		margin: 0 0 1.4rem;
 	}
 	.term .p {
 		color: var(--green);
 	}
-	.term .arrow {
-		color: var(--muted);
-	}
 	.hero h1 {
-		font-size: 1.9rem;
-		line-height: 1.25;
-		margin: 0 0 0.8rem;
+		font-size: 2.3rem;
+		line-height: 1.35;
+		margin: 0 0 1.4rem;
 		color: var(--fg-strong);
+		letter-spacing: -0.02em;
 	}
 	.lead {
-		color: var(--fg);
-		margin: 0 0 1rem;
-		font-size: 1.02rem;
+		color: var(--muted);
+		margin: 0 0 1.4rem;
+		font-size: 1rem;
+		max-width: 34em;
 	}
 	.more {
 		font-family: var(--font-mono);
 		font-size: 0.85rem;
 		margin: 0;
 	}
-	.more a {
-		color: var(--accent);
-		text-decoration: none;
-	}
-	.more a:hover {
-		text-decoration: underline;
-		text-underline-offset: 3px;
-	}
-	.more .sep {
+	.more .sep,
+	.strip .sep {
 		color: var(--muted);
 		margin: 0 0.5rem;
 	}
 
 	.block {
-		margin-bottom: 2.75rem;
+		margin-bottom: 3rem;
 	}
 	.block .head {
 		display: flex;
@@ -158,22 +155,39 @@ const photo = ['profile.jpg', 'profile.jpeg', 'profile.png', 'profile.webp'].fin
 	.all {
 		font-family: var(--font-mono);
 		font-size: 0.82rem;
-		color: var(--accent);
-		text-decoration: none;
+		white-space: nowrap;
 	}
-	.all:hover {
-		text-decoration: underline;
-		text-underline-offset: 3px;
+	.empty {
+		color: var(--muted);
+		font-size: 0.92rem;
+		margin: 0;
+		padding: 1.1rem 0;
+		border-top: 1px solid var(--border);
+		border-bottom: 1px solid var(--border);
+	}
+
+	.strip {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2.5rem;
+		padding-top: 2rem;
+		border-top: 1px solid var(--border);
+		font-size: 0.9rem;
+	}
+	.strip .label {
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		letter-spacing: 0.12em;
+		color: var(--muted);
+		margin: 0 0 0.4rem;
+	}
+	.strip p {
+		margin: 0;
 	}
 
 	@media (max-width: 640px) {
-		.hero {
-			flex-direction: column;
-			align-items: flex-start;
-			gap: 1.1rem;
-		}
 		.hero h1 {
-			font-size: 1.7rem;
+			font-size: 1.75rem;
 		}
 	}
 </style>

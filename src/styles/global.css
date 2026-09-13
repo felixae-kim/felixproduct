@@ -58,7 +58,12 @@ body {
 	line-height: 1.75;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	word-wrap: break-word;
+	/*
+	  Korean has no inter-word break opportunities by default, so the browser
+	  wraps mid-word ("서비스여 / 도,"). keep-all forces breaks at spaces;
+	  overflow-wrap still rescues a single word too long for the line.
+	*/
+	word-break: keep-all;
 	overflow-wrap: break-word;
 }
 main {

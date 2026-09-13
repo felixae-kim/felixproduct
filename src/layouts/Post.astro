@@ -5,16 +5,28 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import { CATEGORIES, href, type Post } from '../lib/posts';
 
-type Props = CollectionEntry<'blog'>['data'] & {
-	prev?: { id: string; title: string };
-	next?: { id: string; title: string };
-	index?: number;
-	total?: number;
+type Props = CollectionEntry<'posts'>['data'] & {
+	prev?: Post;
+	next?: Post;
+	position?: number;
+	length?: number;
 };
 
-const { title, description, pubDate, updatedDate, heroImage, prev, next, index, total } =
-	Astro.props;
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	heroImage,
+	category,
+	series,
+	prev,
+	next,
+	position,
+	length,
+} = Astro.props;
 ---
 
 <html lang="ko">
@@ -35,52 +47,63 @@ const { title, description, pubDate, updatedDate, heroImage, prev, next, index, 
 				}
 				<header class="title">
 					<p class="meta">
-						{index !== undefined && total !== undefined && (
-							<>
-								<span class="no">[{String(index).padStart(2, '0')}/{String(total - 1).padStart(2, '0')}]</span>
-								<span class="sep">·</span>
-							</>
-						)}
+						<a class="cat" href={`/${category}`}>{CATEGORIES[category].heading}</a>
+						{
+							series && position && (
+								<>
+									<span class="sep">/</span>
+									<span class="series">
+										{series} {position}/{length}
+									</span>
+								</>
+							)
+						}
+						<span class="sep">·</span>
 						<FormattedDate date={pubDate} />
 						{
 							updatedDate && (
 								<>
 									<span class="sep">·</span>
-									<span class="updated">updated <FormattedDate date={updatedDate} /></span>
+									<span class="updated">
+										updated <FormattedDate date={updatedDate} />
+									</span>
 								</>
 							)
 						}
 					</p>
 					<h1>{title}</h1>
+					<p class="desc">{description}</p>
 				</header>
 				<div class="prose">
 					<slot />
 				</div>
 			</article>
 
-			<nav class="series-nav" aria-label="연재 내비게이션">
-				{
-					prev ? (
-						<a class="nav-item prev" href={`/blog/${prev.id}/`} rel="prev">
-							<span class="dir">← 이전 편</span>
-							<span class="t">{prev.title}</span>
-						</a>
-					) : (
-						<span class="nav-item empty" />
-					)
-				}
-				{
-					next ? (
-						<a class="nav-item next" href={`/blog/${next.id}/`} rel="next">
-							<span class="dir">다음 편 →</span>
-							<span class="t">{next.title}</span>
-						</a>
-					) : (
-						<span class="nav-item empty" />
-					)
-				}
-			</nav>
-			<p class="back"><a href="/blog">← 전체 글 목록</a></p>
+			{
+				(prev || next) && (
+					<nav class="series-nav" aria-label="연재 내비게이션">
+						{prev ? (
+							<a class="nav-item prev" href={href(prev)} rel="prev">
+								<span class="dir">← 이전 편</span>
+								<span class="t">{prev.data.title}</span>
+							</a>
+						) : (
+							<span class="nav-item empty" />
+						)}
+						{next ? (
+							<a class="nav-item next" href={href(next)} rel="next">
+								<span class="dir">다음 편 →</span>
+								<span class="t">{next.data.title}</span>
+							</a>
+						) : (
+							<span class="nav-item empty" />
+						)}
+					</nav>
+				)
+			}
+			<p class="back">
+				<a href={`/${category}`}>← {CATEGORIES[category].heading} 전체 보기</a>
+			</p>
 		</main>
 		<Footer />
 	</body>
@@ -106,13 +129,18 @@ const { title, description, pubDate, updatedDate, heroImage, prev, next, index, 
 		font-size: 1.9rem;
 		line-height: 1.35;
 	}
+	.desc {
+		color: var(--muted);
+		margin: 0.9rem 0 0;
+		font-size: 0.95rem;
+	}
 	.meta {
 		font-family: var(--font-mono);
 		font-size: 0.85rem;
 		color: var(--muted);
 		margin: 0 0 0.7rem;
 	}
-	.meta .no {
+	.meta .cat {
 		color: var(--green);
 	}
 	.meta .sep {
