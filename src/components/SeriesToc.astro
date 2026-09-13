@@ -1,5 +1,5 @@
 ---
-import { href, type Post } from '../lib/posts';
+import { href, type Post, seriesNo } from '../lib/posts';
 
 interface Props {
 	name: string;
@@ -20,7 +20,9 @@ const { name, posts, currentId } = Astro.props;
 		{
 			posts.map((post, i) => {
 				const current = post.id === currentId;
-				const n = String(i + 1).padStart(2, '0');
+				// The filename prefix is what the titles count by ("1편"), so a plain
+				// 1-based ordinal would sit one off against every title.
+				const n = seriesNo(post) ?? String(i + 1).padStart(2, '0');
 				return (
 					<li class:list={{ current }}>
 						{current ? (
@@ -44,7 +46,7 @@ const { name, posts, currentId } = Astro.props;
 
 <style>
 	.toc {
-		margin-top: 2.5rem;
+		margin-top: 3.5rem;
 		border: 1px solid var(--border);
 		border-radius: 10px;
 		overflow: hidden;

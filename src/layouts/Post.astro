@@ -13,8 +13,6 @@ type Props = CollectionEntry<'posts'>['data'] & {
 	prev?: Post;
 	next?: Post;
 	seriesPosts?: Post[];
-	position?: number;
-	length?: number;
 };
 
 const {
@@ -29,8 +27,6 @@ const {
 	prev,
 	next,
 	seriesPosts,
-	position,
-	length,
 } = Astro.props;
 ---
 
@@ -68,10 +64,7 @@ const {
 					</p>
 					{
 						series && (
-							<p class="series">
-								{series}
-								{position && <span class="pos">{position}/{length}</span>}
-							</p>
+							<p class="series">{series}</p>
 						)
 					}
 					<h1>{title}</h1>
@@ -81,6 +74,12 @@ const {
 					<slot />
 				</div>
 			</article>
+
+			{
+				series && seriesPosts && seriesPosts.length > 1 && (
+					<SeriesToc name={series} posts={seriesPosts} currentId={id} />
+				)
+			}
 
 			{
 				(prev || next) && (
@@ -102,11 +101,6 @@ const {
 							<span class="nav-item empty" />
 						)}
 					</nav>
-				)
-			}
-			{
-				series && seriesPosts && seriesPosts.length > 1 && (
-					<SeriesToc name={series} posts={seriesPosts} currentId={id} />
 				)
 			}
 
@@ -139,12 +133,6 @@ const {
 		font-size: 0.92rem;
 		margin: 0 0 0.4rem;
 	}
-	.series .pos {
-		font-family: var(--font-mono);
-		font-size: 0.8rem;
-		color: var(--border-strong);
-		margin-left: 0.5rem;
-	}
 	.title h1 {
 		margin: 0;
 		font-size: 1.9rem;
@@ -175,13 +163,12 @@ const {
 		color: var(--fg);
 	}
 
+	/* Follows the table of contents, which already separates it from the article. */
 	.series-nav {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 1rem;
-		margin-top: 3.5rem;
-		padding-top: 1.5rem;
-		border-top: 1px solid var(--border);
+		margin-top: 1rem;
 	}
 	.nav-item {
 		display: flex;
