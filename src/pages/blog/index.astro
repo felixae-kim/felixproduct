@@ -2,8 +2,8 @@
 import { getCollection } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
+import PostList from '../../components/PostList.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
 const posts = (await getCollection('blog')).sort(
@@ -12,7 +12,7 @@ const posts = (await getCollection('blog')).sort(
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 	<head>
 		<BaseHead title={`Writing · ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
 	</head>
@@ -21,21 +21,7 @@ const posts = (await getCollection('blog')).sort(
 		<main>
 			<p class="comment">// 디자인 씽킹, 제품 만드는 사람을 위한 연재</p>
 			<h1>Writing</h1>
-			<ol class="series">
-				{
-					posts.map((post) => (
-						<li>
-							<a href={`/blog/${post.id}/`}>
-								<span class="no">[{post.id.slice(0, 2)}]</span>
-								<span class="t">{post.data.title}</span>
-								<span class="date">
-									<FormattedDate date={post.data.pubDate} />
-								</span>
-							</a>
-						</li>
-					))
-				}
-			</ol>
+			<PostList posts={posts} ordered />
 		</main>
 		<Footer />
 	</body>
@@ -50,63 +36,5 @@ const posts = (await getCollection('blog')).sort(
 	}
 	h1 {
 		margin-bottom: 1.6rem;
-	}
-	.series {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		font-family: var(--font-mono);
-		border-top: 1px solid var(--border);
-	}
-	.series li {
-		margin: 0;
-		border-bottom: 1px solid var(--border);
-	}
-	.series a {
-		display: flex;
-		align-items: baseline;
-		gap: 0.9rem;
-		padding: 0.8rem 0.2rem;
-		text-decoration: none;
-	}
-	.series a:hover {
-		text-decoration: none;
-	}
-	.series .no {
-		flex: 0 0 auto;
-		color: var(--green);
-		font-size: 0.9rem;
-	}
-	.series .t {
-		flex: 1 1 auto;
-		color: var(--fg-strong);
-		font-size: 0.95rem;
-	}
-	.series a:hover .t {
-		color: var(--accent);
-	}
-	.series .date {
-		flex: 0 0 auto;
-		font-size: 0.78rem;
-		color: var(--muted);
-		white-space: nowrap;
-	}
-	@media (max-width: 640px) {
-		.series a {
-			flex-wrap: wrap;
-			gap: 0.3rem 0.6rem;
-		}
-		.series .t {
-			flex: 1 1 100%;
-			order: 3;
-			padding-left: 2.1rem;
-		}
-		.series .no {
-			order: 1;
-		}
-		.series .date {
-			order: 2;
-			margin-left: auto;
-		}
 	}
 </style>
