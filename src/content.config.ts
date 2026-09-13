@@ -11,7 +11,7 @@ const posts = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: z.optional(image()),
-			category: z.enum(['product', 'thinking']),
+			category: z.enum(['product', 'think']),
 			// Posts sharing a series get prev/next navigation, ordered by filename.
 			series: z.string().optional(),
 			// Surfaced on the home page as an entry point, newest first.

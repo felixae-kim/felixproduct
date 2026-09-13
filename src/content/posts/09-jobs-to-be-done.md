@@ -2,8 +2,8 @@
 title: '9편. 고객이 제품을 고용하는 목표에서 시작하라'
 description: '사람들이 드릴을 사는 건 구멍이 필요해서입니다. 고객이 제품을 고용하는 목표에서 기능을 정의하는 법, 그리고 아홉 편의 연재를 한 문단으로.'
 pubDate: '2026-09-02'
-category: 'thinking'
-series: '디자인 씽킹'
+category: 'think'
+series: '디자인 씽킹 : 고객중심은 태도가 아니다'
 featured: true
 ---
 

@@ -2,8 +2,8 @@
 title: '5편. 증상 말고 근본 원인'
 description: '누런 얼굴을 화장으로 가릴 것인가, 간을 살필 것인가. 증상과 근본 원인을 가르고, "왜"를 반복해 진짜 원인까지 파고 내려가는 법.'
 pubDate: '2026-08-29'
-category: 'thinking'
-series: '디자인 씽킹'
+category: 'think'
+series: '디자인 씽킹 : 고객중심은 태도가 아니다'
 featured: true
 ---
 

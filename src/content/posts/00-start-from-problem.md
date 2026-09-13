@@ -2,8 +2,8 @@
 title: '솔루션이 아니라 문제에서 시작하는 법: 연재를 시작하며'
 description: 'PM을 위한 디자인 씽킹 연재의 오리엔테이션. 이 글이 누구를 위한 것인지, 무엇을 어떤 순서로 다루는지 정리합니다.'
 pubDate: '2026-08-21'
-category: 'thinking'
-series: '디자인 씽킹'
+category: 'think'
+series: '디자인 씽킹 : 고객중심은 태도가 아니다'
 featured: true
 ---
 

@@ -8,8 +8,8 @@ export const CATEGORIES = {
 		heading: 'Product',
 		blurb: '제품을 뜯어보고, 고치고, 그 과정을 남깁니다.',
 	},
-	thinking: {
-		heading: 'Thinking',
+	think: {
+		heading: 'Think',
 		blurb: '제품을 만들며 생각한 것들. 방법론과 그 언저리.',
 	},
 } as const satisfies Record<Category, { heading: string; blurb: string }>;

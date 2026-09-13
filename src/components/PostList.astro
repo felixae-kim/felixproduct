@@ -19,6 +19,7 @@ const Tag = ordered ? 'ol' : 'ul';
 				<a href={href(post)}>
 					<span class="no">{seriesNo(post) ? `[${seriesNo(post)}]` : '·'}</span>
 					<span class="body">
+						{post.data.series && <span class="s">{post.data.series}</span>}
 						<span class="t">{post.data.title}</span>
 						<span class="d">{post.data.description}</span>
 					</span>
@@ -60,6 +61,14 @@ const Tag = ordered ? 'ol' : 'ul';
 	}
 	.body {
 		min-width: 0;
+	}
+	/* Series name above the title, the way a serial is labelled. */
+	.s {
+		display: block;
+		color: var(--muted);
+		font-size: 0.82rem;
+		line-height: 1.4;
+		margin-bottom: 0.25rem;
 	}
 	.t {
 		display: block;

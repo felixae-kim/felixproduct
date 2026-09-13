@@ -7,6 +7,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { CATEGORIES, CATEGORY_KEYS, getFeatured, getPosts } from '../lib/posts';
 
 const featured = (await getFeatured()).slice(0, 3);
+const latest = (await getPosts()).slice(0, 5);
 const sections = await Promise.all(
 	CATEGORY_KEYS.map(async (key) => ({
 		key,
@@ -30,12 +31,12 @@ const sections = await Promise.all(
 					· 물류 · 11년
 				</p>
 				<h1>
-					경쟁자와 똑같은 서비스여도,<br />
-					고객에게 몰입하면 답이 나옵니다.
+					11년차 진지충 Product Guy는<br />
+					세상에 어떤 임팩트를 남길 것인가
 				</h1>
 				<p class="lead">
-					시장 1위 제품도, 0에서 1을 만드는 일도 그렇게 해냈습니다. 제품을 뜯어보고 고치면서 배운
-					것들을 여기에 씁니다.
+					우리는 모두 '나'라는 1인칭 시점으로 살아갑니다. 우리는 왜 우리로 태어났을까요. 그것을
+					증명하기 위해서 오늘도 어떤 임팩트를 남길 수 있을까 고민하며 살아갑니다.
 				</p>
 				<p class="more">
 					<a href="/about">→ 더 알아보기</a>
@@ -53,6 +54,17 @@ const sections = await Promise.all(
 							<p class="comment">// start here</p>
 						</div>
 						<PostList posts={featured} />
+					</section>
+				)
+			}
+
+			{
+				latest.length > 0 && (
+					<section class="block">
+						<div class="head">
+							<p class="comment">// latest</p>
+						</div>
+						<PostList posts={latest} />
 					</section>
 				)
 			}

@@ -1,9 +1,13 @@
 {
 	"$schema": "https://openapi.vercel.sh/vercel.json",
 	"redirects": [
-		{ "source": "/blog", "destination": "/thinking", "permanent": true },
-		{ "source": "/blog/", "destination": "/thinking", "permanent": true },
-		{ "source": "/blog/:slug", "destination": "/thinking/:slug", "permanent": true },
-		{ "source": "/blog/:slug/", "destination": "/thinking/:slug/", "permanent": true }
+		{ "source": "/blog", "destination": "/think", "permanent": true },
+		{ "source": "/blog/", "destination": "/think", "permanent": true },
+		{ "source": "/blog/:slug", "destination": "/think/:slug", "permanent": true },
+		{ "source": "/blog/:slug/", "destination": "/think/:slug/", "permanent": true },
+		{ "source": "/thinking", "destination": "/think", "permanent": true },
+		{ "source": "/thinking/", "destination": "/think", "permanent": true },
+		{ "source": "/thinking/:slug", "destination": "/think/:slug", "permanent": true },
+		{ "source": "/thinking/:slug/", "destination": "/think/:slug/", "permanent": true }
 	]
 }
