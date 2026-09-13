@@ -6,9 +6,14 @@
 :root {
 	color-scheme: dark;
 
+	/*
+	  Latin/digits resolve to the mono faces; Hangul has no mono coverage, so it
+	  falls through per-character to Pretendard instead of a generic monospace
+	  face — which would render each syllable on a fixed advance ("증 상  말 고").
+	*/
 	--font-mono:
 		ui-monospace, 'SFMono-Regular', 'JetBrains Mono', 'Menlo', 'Consolas',
-		'Liberation Mono', monospace;
+		'Liberation Mono', 'Pretendard Variable', Pretendard, monospace;
 	--font-sans:
 		'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
 		'Segoe UI', Roboto, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
