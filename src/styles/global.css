@@ -118,6 +118,23 @@ p {
 .prose p {
 	margin-bottom: 1.5em;
 }
+/*
+  A paragraph that is nothing but bold text is a lede — the claim the piece
+  turns on — so it sits between body text and a heading in weight. It stays in
+  the body face, because it is prose, not a section title.
+
+  CSS cannot tell this apart from a paragraph that merely STARTS with bold, so
+  write a standalone `**line**` only when a lede is what you mean.
+*/
+.prose p > strong:only-child {
+	display: block;
+	font-size: 1.25rem;
+	line-height: 1.6;
+	color: var(--fg-strong);
+}
+.prose p:has(> strong:only-child) {
+	margin: 2em 0;
+}
 ul,
 ol {
 	list-style: none;
