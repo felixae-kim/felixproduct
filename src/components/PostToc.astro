@@ -1,0 +1,87 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+	headings: MarkdownHeading[];
+}
+
+// Only section headings; deeper levels would make the list longer than useful.
+const items = Astro.props.headings.filter((h) => h.depth === 2);
+---
+
+{
+	items.length > 2 && (
+		<nav class="post-toc" aria-label="이 글의 목차">
+			<p class="head">// 목차</p>
+			<ol>
+				{items.map((h) => (
+					<li>
+						<a href={`#${h.slug}`}>{h.text}</a>
+					</li>
+				))}
+			</ol>
+		</nav>
+	)
+}
+
+<style>
+	.post-toc {
+		margin: 0 0 2.5rem;
+		padding: 1rem 1.2rem;
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		background: var(--surface);
+	}
+	.head {
+		font-family: var(--font-mono);
+		font-size: 0.8rem;
+		color: var(--muted);
+		margin: 0 0 0.6rem;
+	}
+	/*
+	  A long contents list would push the article off the first screen, so on a
+	  wide enough viewport it runs in two columns. Numbering follows DOM order,
+	  which is column by column — the same order the eye reads them.
+	*/
+	ol {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		counter-reset: toc;
+		columns: 2;
+		column-gap: 2rem;
+	}
+	li {
+		margin: 0;
+		counter-increment: toc;
+		break-inside: avoid;
+	}
+	a {
+		display: block;
+		padding: 0.22rem 0;
+		font-size: 0.9rem;
+		line-height: 1.5;
+		color: var(--fg);
+		text-decoration: none;
+	}
+	a::before {
+		content: counter(toc, decimal-leading-zero);
+		font-family: var(--font-mono);
+		font-size: 0.78rem;
+		color: var(--muted);
+		margin-right: 0.7rem;
+	}
+	a:hover {
+		color: var(--accent);
+		text-decoration: none;
+	}
+	a:hover::before {
+		color: var(--green);
+	}
+
+	@media (max-width: 640px) {
+		ol {
+			columns: 1;
+		}
+	}
+</style>

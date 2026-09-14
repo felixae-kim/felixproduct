@@ -12,10 +12,10 @@ export async function getStaticPaths() {
 }
 
 const post = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 const series = await getSeriesContext(post);
 ---
 
-<Post {...post.data} {...series} id={post.id}>
+<Post {...post.data} {...series} id={post.id} {headings}>
 	<Content />
 </Post>
