@@ -1,6 +1,6 @@
 ---
 import FormattedDate from './FormattedDate.astro';
-import { href, type Post, seriesNo } from '../lib/posts';
+import { href, type Post } from '../lib/posts';
 
 interface Props {
 	posts: Post[];
@@ -17,7 +17,6 @@ const Tag = ordered ? 'ol' : 'ul';
 		posts.map((post) => (
 			<li>
 				<a href={href(post)}>
-					<span class="no">{seriesNo(post) ? `[${seriesNo(post)}]` : '·'}</span>
 					<span class="body">
 						{post.data.series && <span class="s">{post.data.series}</span>}
 						<span class="t">{post.data.title}</span>
@@ -45,7 +44,7 @@ const Tag = ordered ? 'ol' : 'ul';
 	}
 	.posts a {
 		display: grid;
-		grid-template-columns: auto 1fr auto;
+		grid-template-columns: 1fr auto;
 		align-items: baseline;
 		gap: 0.2rem 0.9rem;
 		padding: 1.1rem 0.2rem;
@@ -53,11 +52,6 @@ const Tag = ordered ? 'ol' : 'ul';
 	}
 	.posts a:hover {
 		text-decoration: none;
-	}
-	.no {
-		font-family: var(--font-mono);
-		color: var(--green);
-		font-size: 0.9rem;
 	}
 	.body {
 		min-width: 0;
@@ -97,19 +91,14 @@ const Tag = ordered ? 'ol' : 'ul';
 		white-space: nowrap;
 	}
 
+	/* Too narrow to keep the date beside the title; it drops below instead. */
 	@media (max-width: 640px) {
 		.posts a {
-			grid-template-columns: auto 1fr;
-			gap: 0.3rem 0.7rem;
+			grid-template-columns: 1fr;
+			gap: 0.5rem;
 		}
 		.date {
-			grid-column: 2;
-			grid-row: 1;
-			justify-self: end;
-		}
-		.body {
-			grid-column: 2;
-			grid-row: 2;
+			justify-self: start;
 		}
 	}
 </style>
