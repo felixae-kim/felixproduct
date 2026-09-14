@@ -21,6 +21,21 @@ export const href = (post: Post) => `/${post.data.category}/${post.id}/`;
 /** Leading digits of the filename, shown as the series index. */
 export const seriesNo = (post: Post) => post.id.match(/^\d+/)?.[0] ?? null;
 
+/**
+ * Korean prose reads at roughly 500 characters a minute. Markup, code blocks
+ * and link targets are stripped first so a references section full of URLs
+ * does not read as ten extra minutes.
+ */
+export function readingMinutes(post: Post) {
+	const text = (post.body ?? '')
+		.replace(/```[\s\S]*?```/g, '')
+		.replace(/<!--[\s\S]*?-->/g, '')
+		.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+		.replace(/[#>*`_|~-]/g, '')
+		.replace(/\s+/g, '');
+	return Math.max(1, Math.round(text.length / 500));
+}
+
 const byDateDesc = (a: Post, b: Post) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
 
 /**

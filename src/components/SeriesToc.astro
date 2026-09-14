@@ -1,5 +1,5 @@
 ---
-import { href, type Post, seriesNo } from '../lib/posts';
+import { href, type Post, readingMinutes, seriesNo } from '../lib/posts';
 
 interface Props {
 	name: string;
@@ -30,11 +30,13 @@ const { name, posts, currentId } = Astro.props;
 								<span class="n">{n}</span>
 								<span class="t">{post.data.title}</span>
 								<span class="here">지금 보는 글</span>
+								<span class="mins">{readingMinutes(post)}분</span>
 							</span>
 						) : (
 							<a class="row" href={href(post)}>
 								<span class="n">{n}</span>
 								<span class="t">{post.data.title}</span>
+								<span class="mins">{readingMinutes(post)}분</span>
 							</a>
 						)}
 					</li>
@@ -141,6 +143,16 @@ const { name, posts, currentId } = Astro.props;
 		padding: 0.05rem 0.5rem;
 		white-space: nowrap;
 	}
+	/* Estimated reading time, right-aligned so the column reads as one figure. */
+	.mins {
+		flex: 0 0 auto;
+		width: 2.6rem;
+		text-align: right;
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		color: var(--muted);
+		white-space: nowrap;
+	}
 
 	@media (max-width: 640px) {
 		.row {
@@ -154,6 +166,14 @@ const { name, posts, currentId } = Astro.props;
 		}
 		.here {
 			margin-left: auto;
+		}
+		/* The title wraps to its own line, so the time joins the number row. */
+		.mins {
+			width: auto;
+			margin-left: auto;
+		}
+		.here + .mins {
+			margin-left: 0;
 		}
 	}
 </style>
