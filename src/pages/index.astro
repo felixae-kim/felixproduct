@@ -53,7 +53,7 @@ const sections = await Promise.all(
 						<div class="head">
 							<p class="comment">// start here</p>
 						</div>
-						<PostList posts={featured} />
+						<PostList posts={featured} showCategory />
 					</section>
 				)
 			}
@@ -64,7 +64,7 @@ const sections = await Promise.all(
 						<div class="head">
 							<p class="comment">// latest</p>
 						</div>
-						<PostList posts={latest} />
+						<PostList posts={latest} showCategory />
 					</section>
 				)
 			}
