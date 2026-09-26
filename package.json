@@ -18,5 +18,9 @@
     "@vercel/analytics": "^2.0.1",
     "astro": "^7.2.4",
     "sharp": "^0.35.0"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "fsevents": false
   }
 }
